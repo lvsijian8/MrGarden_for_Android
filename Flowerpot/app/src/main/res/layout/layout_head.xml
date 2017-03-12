@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
+
+        <ImageView
+            android:id="@+id/img_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:src="@drawable/common_listview_headview_red_arrow"/>
+        <ProgressBar
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:id="@+id/progress_refreslayout"
+            android:indeterminateDrawable="@drawable/relist_progress"
+            android:indeterminateDuration="2000"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_marginLeft="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="20dp"
+            android:id="@+id/text_refre_title"
+            android:text="下拉刷新"/>
+        <TextView
+            android:layout_marginTop="6dp"
+            android:id="@+id/text_refre_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2015-03-10 17:07:07"
+            android:textSize="16sp"
+            />
+    </LinearLayout>
+</LinearLayout>

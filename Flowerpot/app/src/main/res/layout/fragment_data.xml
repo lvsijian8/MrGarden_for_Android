@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/layout_fdata_contain"
+    android:background="@drawable/bg_line"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:background="@color/green_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="数据报表"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/ibtn_data_edit"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="3dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/bulleted"
+            android:background="@null"/>
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/layout_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:background="@drawable/bg_shape"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="温度"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/black"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+                <lecho.lib.hellocharts.view.LineChartView
+                    android:id="@+id/chart_data_temperature"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+            <com.lvsijian8.flowerpot.ui.view.TasksCompletedView
+                xmlns:lw="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
+                android:id="@+id/tasks_view"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                lw:radius="25dp"
+                lw:strokeWidth="10dp"
+                lw:circleColor="@color/circle_color"
+                lw:ringColor="@color/ring_color">
+            </com.lvsijian8.flowerpot.ui.view.TasksCompletedView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
