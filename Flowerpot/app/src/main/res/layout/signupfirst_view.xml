@@ -24,7 +24,8 @@
         android:maxHeight="130dp"/>
 
 
-    <RadioGroup android:id="@+id/rg"
+    <RadioGroup
+        android:id="@+id/rg"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"

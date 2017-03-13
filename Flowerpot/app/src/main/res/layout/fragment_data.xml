@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+
     android:id="@+id/layout_fdata_contain"
     android:background="@drawable/bg_line"
     android:layout_width="match_parent"
@@ -10,6 +11,17 @@
         android:background="@color/green_title"
         android:layout_width="fill_parent"
         android:layout_height="40dp">
+        <com.lvsijian8.flowerpot.ui.view.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
+            android:id="@+id/circle_fdata_icon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/tou"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:border_width="2dp"
+            app:border_color="#FFF"/>
         <TextView
             android:layout_centerInParent="true"
             android:text="数据报表"
@@ -54,16 +66,26 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-            <com.lvsijian8.flowerpot.ui.view.TasksCompletedView
-                xmlns:lw="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
-                android:id="@+id/tasks_view"
+
+            <LinearLayout
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_shape"
                 android:layout_width="fill_parent"
-                android:layout_height="80dp"
-                lw:radius="25dp"
-                lw:strokeWidth="10dp"
-                lw:circleColor="@color/circle_color"
-                lw:ringColor="@color/ring_color">
-            </com.lvsijian8.flowerpot.ui.view.TasksCompletedView>
+                android:layout_height="200dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="湿度"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/black"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+                <lecho.lib.hellocharts.view.LineChartView
+                    android:id="@+id/chart_data_humidity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

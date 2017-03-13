@@ -2,7 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@color/slategray" >
-    
+    android:orientation="vertical"
+    android:background="@drawable/bg_line" >
+    <RelativeLayout
+        android:background="@color/green_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="花花世界"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/ibtn_find_search"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="3dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/search_icon"
+            android:background="@null"/>
+    </RelativeLayout>
+    <com.lvsijian8.flowerpot.ui.view.Relistview
+        android:id="@+id/lv_find_flower"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </com.lvsijian8.flowerpot.ui.view.Relistview>
 
 </LinearLayout>
