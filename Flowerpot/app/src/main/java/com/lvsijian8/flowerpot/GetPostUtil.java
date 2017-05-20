@@ -14,8 +14,6 @@ public class GetPostUtil implements Runnable
 {
 	private static final String BASE_URL="http://172.16.60.45:8080/FlowerpotTomcat/";
 	String url,params;
-	// 定义向UI线程发送消息的Handler对象
-	static public Handler handler;
 	/**
 	 * 向指定URL发送POST方法的请求
 	 * @param url 发送请求的URL
@@ -85,7 +83,7 @@ public class GetPostUtil implements Runnable
 		Message msg = new Message();
 		msg.what = 0x888;
 		msg.obj = result;
-		handler.sendMessage(msg);
+		MainActivity.handler.sendMessage(msg);
 	}
 }
 

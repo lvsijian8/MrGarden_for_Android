@@ -14,10 +14,14 @@ import com.lvsijian8.flowerpot.R;
 
 public class FragmentPot extends Fragment {
     TextView wendu;
+    private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_time, container, false);
+        if (view==null){
+            view = inflater.inflate(R.layout.fragment_time, container, false);
+        }
         wendu = (TextView) view.findViewById(R.id.wendu);
         Button bt = (Button) view.findViewById(R.id.refresh_wendu);
         bt.setOnClickListener(new View.OnClickListener() {

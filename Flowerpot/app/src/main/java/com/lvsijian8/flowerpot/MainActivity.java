@@ -7,15 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -23,13 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.lvsijian8.flowerpot.ui.activity.Main;
+import com.lvsijian8.flowerpot.global.Const;
+import com.lvsijian8.flowerpot.http.HttpHelper;
+import com.lvsijian8.flowerpot.ui.activity.AppendActivity;
+import com.lvsijian8.flowerpot.ui.activity.ContainActivity;
+import com.lvsijian8.flowerpot.utils.UIUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,29 +49,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView appName;
     static private SharedPreferences preferences;
     static private String prename;
+    private String user_name;
+    private String user_pwd;
+    private int user_id;
 
     ClientThread clientThread;
-    Handler handler;
+    static Handler handler;
     MediaPlayer mediaPlayerchange;
+    private HttpHelper httpHelper;
+    private HashMap<String, Object> hashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
-            window.setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window window = getWindow();
+//            window.setFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
+        Const.selector=0;
         preferences=getSharedPreferences("user",MODE_PRIVATE);
         int mark=0;
-        if(0<preferences.getInt("user_id",-1)){
-            Intent intent = new Intent(MainActivity.this, Main.class);//已登录,跳过登录界面
+        if(0< UIUtils.getSpInt(Const.USER_ID)){
+            Intent intent = new Intent(MainActivity.this, ContainActivity.class);//已登录,跳过登录界面
             startActivity(intent);
             mark=1;
         }
-        Intent intentf = new Intent(MainActivity.this, FirstPicture.class);
-        startActivity(intentf);
+//        Intent intentf = new Intent(MainActivity.this, FirstPicture.class);
+//        startActivity(intentf);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
@@ -81,71 +93,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playVideo(videoFile);
 
         playAnim();
-        handler = new Handler()                                     //等待服务器返回
-        {
-            @Override
-            public void handleMessage(Message msg)
-            {
-                // 如果消息来自于子线程
-                //if (msg.what == 0x123)
-                if (msg.what == 0x888)
-                {
-                    String content=msg.obj.toString();
-                    switch((content.charAt(0)-'0')){
-                        case 0:{
-                            if((content.charAt(1)-'0')>0)
-                            {
-                                Toast.makeText(MainActivity.this,"密码正确。",Toast.LENGTH_LONG).show();
-                                SharedPreferences.Editor editor=preferences.edit();
-                                editor.putString("name",prename);
-                                editor.putInt("user_id",(content.charAt(1)-'0'));
-                                editor.commit();
-                                Intent intent = new Intent(MainActivity.this, Main.class);
-                                startActivity(intent);//以登陆跳转界面
-                                finish();
-                                break;
-                            }
-                            else {
-                                Toast.makeText(MainActivity.this, "输入有误，请重新输入。", Toast.LENGTH_LONG).show();
-                                break;
-                            }
-                        }
-                        case 1:{
-                            if((content.charAt(1)-'0')==-1)
-                            {
-                                Toast.makeText(MainActivity.this,"该用户用户已存在，请登录",Toast.LENGTH_LONG).show();break;
-                            }
-                            else if((content.charAt(1)-'0')>0)
-                            {
-                                Toast.makeText(MainActivity.this,"注册成功",Toast.LENGTH_LONG).show();
-                                SharedPreferences.Editor editor=preferences.edit();
-                                editor.putString("name",prename);
-                                editor.putInt("user_id",(content.charAt(1)-'0'));
-                                editor.commit();
-                                Intent intent = new Intent(MainActivity.this, SignUpFirst.class);//跳转初始化界面
-                                startActivity(intent);
-                                finish();
-                                break;
-                            }
-                            else {
-                                Toast.makeText(MainActivity.this, "网络连接失败，请重新注册", Toast.LENGTH_LONG).show();
-                                break;
-                            }
-                        }
-                    }
-                }
-                /*if (msg.what == 0x888)//登陆进程返回值
-                {
-
-
-
-
-                    Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
-                }*/
-            }
-        };
+//        handler = new Handler()                                     //等待服务器返回
+//        {
+//            @Override
+//            public void handleMessage(Message msg)
+//            {
+//                // 如果消息来自于子线程
+//                //if (msg.what == 0x123)
+//                if (msg.what == 0x888)
+//                {
+//                    String content=msg.obj.toString();
+//                    switch((content.charAt(0)-'0')){
+//                        case 0:{
+//                            if((content.charAt(1)-'0')>0)
+//                            {
+//                                Toast.makeText(MainActivity.this,"密码正确。",Toast.LENGTH_LONG).show();
+//                                SharedPreferences.Editor editor=preferences.edit();
+//                                editor.putString("name",prename);
+//                                editor.putInt("user_id",(content.charAt(1)-'0'));
+//                                editor.commit();
+//
+//
+//
+//                                Intent intent = new Intent(MainActivity.this, ContainActivity.class);
+//                                startActivity(intent);//以登陆跳转界面
+//                                finish();
+//                                break;
+//                            }
+//                            else {
+//                                Toast.makeText(MainActivity.this, "输入有误，请重新输入。", Toast.LENGTH_LONG).show();
+//                                break;
+//                            }
+//                        }
+//                        case 1:{
+//                            if((content.charAt(1)-'0')==-1)
+//                            {
+//                                Toast.makeText(MainActivity.this,"该用户用户已存在，请登录",Toast.LENGTH_LONG).show();break;
+//                            }
+//                            else if((content.charAt(1)-'0')>0)
+//                            {
+//                                Toast.makeText(MainActivity.this,"注册成功",Toast.LENGTH_LONG).show();
+//                                SharedPreferences.Editor editor=preferences.edit();
+//                                editor.putString("name",prename);
+//                                editor.putInt("user_id",(content.charAt(1)-'0'));
+//                                editor.commit();
+//                                Intent intent = new Intent(MainActivity.this, SignUpFirst.class);//跳转初始化界面
+//                                startActivity(intent);
+//                                finish();
+//                                break;
+//                            }
+//                            else {
+//                                Toast.makeText(MainActivity.this, "网络连接失败，请重新注册", Toast.LENGTH_LONG).show();
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//                /*if (msg.what == 0x888)//登陆进程返回值
+//                {
+//
+//
+//
+//
+//                    Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+//                }*/
+//            }
+//        };
         //ClientThread.handler=handler;
-        GetPostUtil.handler=handler;
+
        /* clientThread = new ClientThread();
         Thread thread=new Thread(clientThread);
         thread.start();*/
@@ -163,21 +178,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         formView.post(new Runnable() {
             @Override
             public void run() {
-                int delta = formView.getTop()+formView.getHeight();
+                int delta = formView.getTop() + formView.getHeight();
                 formView.setTranslationY(-1 * delta);
             }
         });
         formViewSU.post(new Runnable() {
             @Override
             public void run() {
-                int deltaSU = formViewSU.getTop()+formViewSU.getHeight();
+                int deltaSU = formViewSU.getTop() + formViewSU.getHeight();
                 formViewSU.setTranslationY(-1 * deltaSU);
             }
         });
     }
 
     private void initView() {
+        httpHelper = HttpHelper.getInstances();
+        hashMap = new HashMap<>();
+        httpHelper.setOnConnectionListener(new HttpHelper.OnConnectionListener() {
+            @Override
+            public void successConnect(String data) {
+                Message message=new Message();
+                if (data!=null){
+                    Log.e("ZDLW",""+data);
+                    int code=Integer.parseInt(data.toString().trim());
+                    if (code==-1){
+                        message.what=Const.SIGNUP_STATE_REPEAT;
+                    }else if (code==-2){
+                        message.what=Const.LOGIN_STATE_UNEXIST;
+                    }else if (code==-3){
+                        message.what=Const.LOGIN_STATE_PWDFAIL;
+                    }else {
+                        switch (inputType){
+                            case LOGIN:
+                                message.what=Const.LOGIN_STATE_SUCCESS;
+                                message.obj=code;
+                                break;
+                            case SIGN_UP:
+                                message.what=Const.SIGNUP_STATE_SUCCESS;
+                                message.obj=code;
+                                break;
+                        }
+                    }
+                    mhandler.sendMessage(message);
+                }
 
+
+            }
+
+            @Override
+            public void failConnect() {
+
+            }
+        });
         buttonRight.setOnClickListener(this);
         buttonLeft.setOnClickListener(this);
     }
@@ -261,10 +313,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case LOGIN:
-
+                //登录操作
                 if (view == buttonLeft) {
                     if(validate()){
-                        new Thread(new GetPostUtil("MyServer","switchMode=userLogin&username="+formView.getEdit1()+"&userpass="+formView.getEdit2())).start();
+                        //okhttp方法：
+                        hashMap.clear();
+                        user_name=formView.getEdit1();
+                        user_pwd=formView.getEdit2();
+                        if (!TextUtils.isEmpty(user_name)&&!TextUtils.isEmpty(user_pwd)){
+                            try {
+                                hashMap.put(Const.USER_NAME, URLEncoder.encode(user_name,"UTF-8"));
+                                hashMap.put(Const.USER_PASSWODR,URLEncoder.encode(user_pwd,"UTF-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        httpHelper.getJsonData(Const.URL_LOGIN, hashMap);
+//                        new Thread(new GetPostUtil("MyServer","switchMode=userLogin&username="+formView.getEdit1()+"&userpass="+formView.getEdit2())).start();
                         prename=formView.getEdit1();
                         formView.setEdit1("");
                         formView.setEdit2("");
@@ -282,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (view == buttonLeft) {
                     if(validateSU()){
+                        //注册联网操作
                         /*Message msg = new Message();
                         msg.what = 0x346;
                         Bundle bundle = new Bundle();
@@ -290,9 +356,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         bundle.putString("phone",formViewSU.getPhone());
                         msg.setData(bundle);
                         clientThread.revHandler.sendMessage(msg);//发送注册信息至线程*/
+                        hashMap.clear();
+                        String user_name=formViewSU.getName();
+                        String user_pwd=formViewSU.getPass1();
+                        String user_phone=formViewSU.getPhone();
+                        try {
+                            hashMap.put(Const.USER_NAME,user_name);
+                            hashMap.put(Const.USER_PASSWODR,URLEncoder.encode(user_pwd,"utf-8"));
+                            hashMap.put(Const.USER_PHONE,URLEncoder.encode(user_phone,"utf-8"));
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        httpHelper.getJsonData(Const.URL_SIGNUP,hashMap);
 
 
-                        new Thread(new GetPostUtil("MyServer","switchMode=userSign_up&username="+formViewSU.getName()+"&userpass="+formViewSU.getPass1()+"&userphone"+formViewSU.getPhone())).start();
+//                        new Thread(new GetPostUtil("MyServer","switchMode=userSign_up&username="+formViewSU.getName()+"&userpass="+formViewSU.getPass1()+"&userphone"+formViewSU.getPhone())).start();
 
 
                         prename=formViewSU.getName();
@@ -410,6 +488,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     enum InputType {
-        NONE, LOGIN, SIGN_UP;
+        NONE, LOGIN, SIGN_UP
     }
+
+    private Handler mhandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+           switch (msg.what){
+               case Const.LOGIN_STATE_UNEXIST:
+                   Toast.makeText(UIUtils.getContext(),"账号不存在",Toast.LENGTH_SHORT).show();
+                   formView.setEdit1("");//清空账号输入
+                   formView.setEdit2("");//清空密码输入
+                   break;
+               case Const.LOGIN_STATE_PWDFAIL:
+                   Toast.makeText(UIUtils.getContext(),"密码错误，请重新输入",Toast.LENGTH_SHORT).show();
+                   formView.setEdit1("");//清空账号输入
+                   formView.setEdit2("");//清空密码输入
+                   break;
+               case Const.LOGIN_STATE_SUCCESS:
+                   UIUtils.setSpNumInt(Const.USER_ID,(int)msg.obj);//设置ID号保存
+                   UIUtils.setSpString(Const.USER_NAME, user_name);//设置用户名保存
+                   Toast.makeText(UIUtils.getContext(),"成功登录",Toast.LENGTH_SHORT).show();
+                   startActivity(new Intent(MainActivity.this,ContainActivity.class));
+                   finish();
+                   break;
+               case Const.SIGNUP_STATE_REPEAT:
+                   Toast.makeText(UIUtils.getContext(),"账号已存在",Toast.LENGTH_SHORT).show();
+                   //清空输入项
+                   formViewSU.setName("");
+                   formViewSU.setPass1("");
+                   formViewSU.setPass2("");
+                   formViewSU.setPhone("");
+                   break;
+               case Const.SIGNUP_STATE_SUCCESS:
+                   UIUtils.setSpNumInt(Const.USER_ID,(int)msg.obj);//设置ID号保存
+                   UIUtils.setSpString(Const.USER_NAME, user_name);//设置用户名保存
+                   Toast.makeText(UIUtils.getContext(),"注册成功",Toast.LENGTH_SHORT).show();
+                   Const.APPEND_INTSTATE=Const.APPEND_REGISTER;
+                   startActivity(new Intent(MainActivity.this, AppendActivity.class));
+                   finish();
+                   break;
+           }
+        }
+    };
+    private long back_time;
+    //双击返回的逻辑处理
+    @Override
+    public void onBackPressed() {
+        long progress= System.currentTimeMillis();
+        if (progress-back_time>2000){
+            Toast.makeText(UIUtils.getContext(),"再按一次退出",Toast.LENGTH_SHORT).show();
+            back_time=progress;
+        }else {
+            finish();
+        }
+    }
+
+
 }

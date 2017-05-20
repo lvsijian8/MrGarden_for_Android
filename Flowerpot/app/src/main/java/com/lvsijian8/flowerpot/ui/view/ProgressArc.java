@@ -202,8 +202,8 @@ public class ProgressArc extends View {
 		}
 	}
 
-	public static interface OnProgressChangeListener {
+	public interface OnProgressChangeListener {
 
-		public void onProgressChange(float smoothProgress);
+		void onProgressChange(float smoothProgress);
 	}
 }

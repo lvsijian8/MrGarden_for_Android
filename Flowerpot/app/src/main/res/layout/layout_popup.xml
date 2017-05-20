@@ -6,9 +6,10 @@
     android:background="@color/white"
     android:layout_height="match_parent">
     <com.lvsijian8.flowerpot.ui.view.MyCheckBox
+        android:id="@+id/box_popup_light"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        lw:tvtitle="温度"
+        lw:tvtitle="光照"
         lw:co="@color/gray">
     </com.lvsijian8.flowerpot.ui.view.MyCheckBox>
     <View
@@ -19,8 +20,9 @@
         android:background="@color/gray">
     </View>
     <com.lvsijian8.flowerpot.ui.view.MyCheckBox
+        android:id="@+id/box_popup_humidity"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        lw:tvtitle="湿度">
+        lw:tvtitle="土壤湿度">
     </com.lvsijian8.flowerpot.ui.view.MyCheckBox>
 </LinearLayout>

@@ -3,22 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@color/plum" >
-
-
-    <TextView
-        android:text="时间轴"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:fontFamily="sans-serif"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:textColor="@color/aliceblue" />
-
-    <Button
-        android:text="注销"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button" />
+    android:id="@+id/layout_time_contain"
+    android:orientation="vertical" android:background="@drawable/bg_line" >
+    <RelativeLayout
+        android:background="@color/green_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="设备管理"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/ibtn_time_edit"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/menu_icon"
+            android:background="@null"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp">
+        <ListView
+            android:id="@+id/lv_time_item"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            android:paddingTop="30dp"
+            android:paddingBottom="20dp"
+            android:overScrollMode="never"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:divider="@color/transparent"
+            android:dividerHeight="40dp"></ListView>
+        <ProgressBar
+            android:id="@+id/progress_time_loading"
+            android:layout_centerInParent="true"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:indeterminateDrawable="@drawable/relist_progress"/>
+        <LinearLayout
+            android:id="@+id/layout_time_error"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_time_error"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_error_page"/>
+            <Button
+                android:id="@+id/btn_time_error"
+                android:text="加载失败，请重试"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

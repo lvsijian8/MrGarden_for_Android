@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_fdata_contain"
     android:background="@drawable/bg_line"
     android:layout_width="match_parent"
@@ -12,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp">
         <com.lvsijian8.flowerpot.ui.view.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/circle_fdata_icon"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
@@ -29,18 +28,18 @@
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <ImageButton
+        <ImageView
             android:id="@+id/ibtn_data_edit"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="5dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/bulleted"
+            android:src="@drawable/menu_icon"
             android:background="@null"/>
     </RelativeLayout>
     <ScrollView
-        android:id="@+id/layout_scroll"
+        android:id="@+id/layout_data_scroll"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -49,7 +48,7 @@
             android:layout_height="200dp"
             android:orientation="vertical">
             <LinearLayout
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/bg_shape"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
@@ -68,25 +67,103 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_shape"
+                android:layout_width="fill_parent"
+                android:layout_height="210dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="% 湿度"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/black"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+                <lecho.lib.hellocharts.view.ColumnChartView
+                    android:id="@+id/chart_data_humidity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_hide_light"
+                android:visibility="gone"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/bg_shape"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
                 android:orientation="vertical">
                 <TextView
-                    android:text="湿度"
+                    android:text="光照"
                     android:textSize="18dp"
                     android:layout_marginLeft="30dp"
                     android:textColor="@color/black"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
                 <lecho.lib.hellocharts.view.LineChartView
-                    android:id="@+id/chart_data_humidity"
+                    android:id="@+id/chart_data_light"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_hide_inhumidity"
+                android:visibility="gone"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_shape"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="% 土壤湿度"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/black"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+                <lecho.lib.hellocharts.view.ColumnChartView
+                    android:id="@+id/chart_data_inhumidity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_shape"
+                android:layout_width="fill_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="9dp"
+                android:layout_height="150dp">
+                <ImageView
+                    android:id="@+id/iv_data_warning"
+                    android:visibility="gone"
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/warn_icon"
+                    android:background="@null"/>
+                <TextView
+                    android:id="@+id/tv_data_warning"
+                    android:layout_width="wrap_content"
+                    android:textSize="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="您的植物正茁壮成长"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
+    <Button
+        android:id="@+id/btn_data_append"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_btn"
+        android:text="添加花盆"/>
 </LinearLayout>

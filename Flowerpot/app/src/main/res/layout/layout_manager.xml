@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lw="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <com.lvsijian8.flowerpot.ui.view.MySeekBar
+       android:id="@+id/myseekbar_day"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       lw:stitle="请设置浇水间隔(天)"
+       lw:num="30"
+       lw:max="30"
+       lw:min="0">
+   </com.lvsijian8.flowerpot.ui.view.MySeekBar>
+
+    <com.lvsijian8.flowerpot.ui.view.MySeekBar
+        android:layout_marginTop="10dp"
+        android:id="@+id/myseekbar_time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        lw:stitle="请设置浇水时间(24小时制)"
+        lw:num="24"
+        lw:max="24"
+        lw:min="0">
+    </com.lvsijian8.flowerpot.ui.view.MySeekBar>
+
+    <com.lvsijian8.flowerpot.ui.view.MySeekBar
+        android:layout_marginTop="10dp"
+        android:id="@+id/myseekbar_ml"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        lw:stitle="请设置浇水量(ml)"
+        lw:num="400"
+        lw:max="400"
+        lw:min="0">
+    </com.lvsijian8.flowerpot.ui.view.MySeekBar>
+
+
+</LinearLayout>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:background="@drawable/bg_equip"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="fill_parent"
+        android:layout_height="75dp">
+        <TextView
+            android:id="@+id/tv_equip_name"
+            android:text="虎尾兰"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="85dp"
+            android:layout_marginEnd="85dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/tv_equip_electric"
+            android:layout_toStartOf="@+id/tv_equip_electric" />
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_equip_electric"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <TextView
+            android:id="@+id/tv_equip_electric"
+            android:layout_marginRight="50dp"
+            android:layout_alignParentRight="true"
+            android:text="电量：90%"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/state_on"
+            android:id="@+id/iv_equip_state"
+            android:layout_alignTop="@+id/tv_equip_state"
+            android:layout_toLeftOf="@+id/tv_equip_state"
+            android:layout_toStartOf="@+id/tv_equip_state" />
+        <TextView
+            android:id="@+id/tv_equip_state"
+            android:text="在线"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_equip_warning"
+            android:layout_alignRight="@+id/tv_equip_name"
+            android:layout_alignEnd="@+id/tv_equip_name" />
+
+        <TextView
+            android:id="@+id/tv_equip_warning"
+            android:text="缺水"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp" />
+    </RelativeLayout>
+
+
+
+
+
+    <LinearLayout
+        android:paddingRight="3dp"
+        android:paddingLeft="3dp"
+        android:paddingBottom="3dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:id="@+id/tv_equip_manager"
+            android:text="远程管理"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/green_title"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="3dp"
+            android:layout_height="fill_parent"></View>
+        <TextView
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:id="@+id/tv_equip_history"
+            android:text="历史"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/green_title"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

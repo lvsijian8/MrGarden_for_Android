@@ -14,6 +14,7 @@
     <TextView
         android:id="@+id/tv_tab"
         android:layout_marginTop="3dp"
+        android:textColor="@drawable/bg_text"
         android:textSize="11dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_height="40dp">
+    <CheckBox
+        android:id="@+id/cb_batch_check"
+        android:clickable="false"
+        android:focusable="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        style="@style/MyCheckboxStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_batch_name"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/cb_batch_check"
+        android:layout_width="100dp"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:text="蝴蝶兰"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:textSize="17dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tv_batch_water"
+        android:layout_marginTop="3dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20%"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="150dp"
+        android:textSize="17dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tv_batch_bottle"
+        android:layout_marginTop="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30%"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="230dp"
+        android:textSize="17dp"
+        android:textColor="@color/black"/>
+
+    <ImageView
+        android:id="@+id/iv_batch_state"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/state_on"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tv_batch_state"
+        android:layout_toStartOf="@+id/tv_batch_state" />
+
+    <TextView
+        android:id="@+id/tv_batch_state"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="在线"
+        android:textSize="17dp"
+        android:textColor="@color/black"/>
+</RelativeLayout>

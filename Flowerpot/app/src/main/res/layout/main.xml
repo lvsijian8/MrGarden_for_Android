@@ -2,22 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
+    android:background="@color/transparent"
     android:orientation="vertical" >
     <FrameLayout
         android:id="@+id/activity_home_container"
+        android:background="@drawable/bg_tabhost"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
     </FrameLayout>
-
+    <View
+        android:layout_height="0.5dp"
+        android:layout_width="fill_parent"
+        android:background="@color/lightgray">
+    </View>
 
     <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#FFF1F1F1">
+        android:background="@color/white">
 
         <FrameLayout
             android:id="@android:id/tabcontent"

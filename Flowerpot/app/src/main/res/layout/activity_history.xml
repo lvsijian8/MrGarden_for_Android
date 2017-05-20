@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.lvsijian8.flowerpot.ui.activity.HistoryActivity">
+    <RelativeLayout
+        android:background="@color/green_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <ImageView
+            android:id="@+id/iv_history_back"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="3dp"
+            android:src="@drawable/backwhite_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="历史记录"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <com.lvsijian8.flowerpot.ui.view.Relistview
+            android:visibility="gone"
+            android:id="@+id/rlv_history"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            ></com.lvsijian8.flowerpot.ui.view.Relistview>
+        <ProgressBar
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:id="@+id/progress_history_loading"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:indeterminateDrawable="@drawable/relist_progress"/>
+        <LinearLayout
+            android:id="@+id/layout_history_error"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_time_error"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_error_page"/>
+            <Button
+                android:id="@+id/btn_history_error"
+                android:text="加载失败，请重试"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

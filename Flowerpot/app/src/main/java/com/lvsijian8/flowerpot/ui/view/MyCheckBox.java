@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,7 +42,14 @@ public class MyCheckBox extends RelativeLayout {
         View.inflate(context, R.layout.layout_mycheck,this);
         tv= (TextView) this.findViewById(R.id.tv_check);
         box= (CheckBox) this.findViewById(R.id.box_check);
-        box.setEnabled(false);
+//        box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (listener!=null){
+//                    listener.StateChang(isChecked);
+//                }
+//            }
+//        });
     }
 
     public void setCheckState(boolean ischeck){
@@ -56,5 +64,12 @@ public class MyCheckBox extends RelativeLayout {
         return box.isChecked();
     }
 
+//    public interface OnMyCheckBoxStateListener{
+//        void StateChang(boolean isCheck);
+//    }
+//    private OnMyCheckBoxStateListener listener;
+//    public void setOnMyCheckBoxStateListener(OnMyCheckBoxStateListener listener){
+//        this.listener=listener;
+//    }
 
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+    <TextView
+        android:id="@+id/tv_MySeekBar_title"
+        android:textColor="@color/black"
+        android:text="浇水的间隔"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"/>
+    <RelativeLayout
+        android:layout_marginTop="7dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <SeekBar
+            android:id="@+id/seekbar_MySeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="15dp"
+            android:maxHeight="15dp"
+            android:max="30" />
+
+        <TextView
+            android:id="@+id/tv_MySeekBar_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="0"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_below="@+id/seekbar_MySeekBar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/tv_MySeekBar_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="30"
+            android:layout_alignBaseline="@+id/tv_MySeekBar_min"
+            android:layout_alignBottom="@+id/tv_MySeekBar_min"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="21dp"
+            android:layout_marginEnd="21dp" />
+
+        <TextView
+            android:id="@+id/tv_MySeekBar_num"
+            android:text="0"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/seekbar_MySeekBar"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+</LinearLayout>

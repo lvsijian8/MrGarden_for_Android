@@ -1,12 +1,21 @@
 package com.lvsijian8.flowerpot.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.lvsijian8.flowerpot.global.GoglePlayApplication;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -22,7 +31,8 @@ public class UIUtils {
     public static int geMainThreadId(){
         return GoglePlayApplication.getMainThreadid();
     }
-
+    public static Typeface getTypeFace(){return GoglePlayApplication.getTypeface();}//获取字体文件
+    public static Gson getGson(){return GoglePlayApplication.getGson();}//返回Gson
     ////////////////////////加载资源文件//////////////////////////////
 
     /**
@@ -81,11 +91,7 @@ public class UIUtils {
     //判断是否在主线程运行
     public static boolean isRunOnUiThread(){
         int nowid=android.os.Process.myTid();
-        if (nowid==geMainThreadId()){
-            return true;
-        }else {
-            return false;
-        }
+        return nowid == geMainThreadId();
     }
 
     //运行在主线程的方法
@@ -96,4 +102,63 @@ public class UIUtils {
             getHandle().post(r);//在子线程，借助handle，运行在主线程
         }
     }
+
+    //获取sp以及设置sp
+    private static SharedPreferences sp=getContext().getSharedPreferences("config",Context.MODE_PRIVATE);
+    private static SharedPreferences.Editor editor=sp.edit();
+
+    public static void  setSpNumInt(String key,int value)
+    {
+        editor.putInt(key,value).commit();
+    }
+    public static void  setSpString(String key,String value) {
+        editor.putString(key, value).commit();
+    }
+    public static void  setSpBoolean(String key,boolean value){
+        editor.putBoolean(key, value).commit();
+    }
+
+    public static int getSpInt(String key){
+        return sp.getInt(key,-1);
+    }
+    public static String getSpString(String key){
+        return sp.getString(key, null);
+    }
+    public static boolean getSpBoolean(String key){
+        return sp.getBoolean(key, false);
+    }
+    //----------------------------------------------------------------------------------------
+    public static int currentapiVersion=android.os.Build.VERSION.SDK_INT;//获取api版本好
+
+    /**
+     * 返回当前程序版本名
+     */
+    public static String getAppVersionName() {
+        String versionName = "";
+        int versioncode=0;
+        try {
+            // ---get the package info---
+            PackageManager pm = getContext().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo( getContext().getPackageName(), 0);
+            versionName = pi.versionName;
+            versioncode = pi.versionCode;
+            if (versionName == null || versionName.length() <= 0) {
+                return "";
+            }
+        } catch (Exception e) {
+            Log.e("VersionInfo", "Exception", e);
+        }
+        return versionName;
+    }
+
+    /**
+     * 返回系统当前时间
+     * @return
+     */
+    public static String currentTime(){
+        Date date=new Date();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
+
 }

@@ -7,16 +7,31 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="colorPrimaryDark">@color/green_title</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/green_ationbar</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
+
     </style>
 
     <style name="anim_menu_bottombar">
         <item name="android:windowEnterAnimation">@anim/menu_bottombar_in</item>
         <item name="android:windowExitAnimation">@anim/menu_bottombar_out</item>
+    </style>
 
+    <style name="anim_menu_remote">
+        <item name="android:windowEnterAnimation">@anim/popup_remote_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_remote_out</item>
+    </style>
+    
+    <style name="WaterRatingBar" parent="Base.Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/detail_water</item>
+        <item name="android:minHeight">25dp</item>
+        <item name="android:maxHeight">25dp</item>
+    </style>
+
+    <style name="AlertStyle" parent="AppTheme">
+        <item name="android:windowSoftInputMode">adjustPan</item>
     </style>
 
 </resources>

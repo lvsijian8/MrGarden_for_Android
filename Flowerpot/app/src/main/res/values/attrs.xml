@@ -5,15 +5,39 @@
         <attr name="circleColor" format="color"/>
         <attr name="ringColor" format="color"/>
     </declare-styleable>
-
+    //带介绍的CheckBox
     <declare-styleable name="MyCheckBox">
         <attr name="tvtitle" format="string"></attr>
         <attr name="co" format="color"></attr>
     </declare-styleable>
-
+    //圆形ImageView
     <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
     </declare-styleable>
+    //带介绍的浇水量、施肥量等的ImageView
+    <declare-styleable name="DetailItem">
+        <attr name="name" format="string"/>
+    </declare-styleable>
+    //我界面的设置
+    <declare-styleable name="SettingItem">
+        <attr name="one" format="string"/>
+        <attr name="two" format="string"/>
+    </declare-styleable>
+    //拖动条附带最大最小当前值
+    <declare-styleable name="MySeekBar">
+        <attr name="stitle" format="string"/>
+        <attr name="max" format="string"/>
+        <attr name="min" format="string"/>
+        <attr name="num" format="integer"/>
+    </declare-styleable>
+    //TextView带EditText的文条
+    <declare-styleable name="TetText">
+        <attr name="msg" format="string"/>
+        <attr name="defaulthint" format="string"/>
+    </declare-styleable>
 
+    <style name="MyCheckboxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/mycheck</item>
+    </style>
 </resources>

@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lvsijian8.flowerpot.R;
+import com.lvsijian8.flowerpot.utils.UIUtils;
 
 
 /**
@@ -168,12 +169,13 @@ public class Relistview extends ListView implements AdapterView.OnItemClickListe
         img.startAnimation(upani);
         pbr.setVisibility(GONE);
         msg.setText("下拉刷新");
+        setReshreTime();
     }
 
 
     public void Closeloading(){
         ismoreloading=false;
-        footview.setPadding(0,-footheight,0,0);
+        footview.setPadding(0, -footheight, 0, 0);
     }
 
 
@@ -201,5 +203,17 @@ public class Relistview extends ListView implements AdapterView.OnItemClickListe
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+    }
+
+    /**
+     * 设置上次刷新时间
+     */
+    public void setReshreTime(){
+        String timeString= UIUtils.getSpString("time");
+        if (timeString==null){
+            timeString=UIUtils.currentTime();
+        }
+        time.setText(timeString);
+        UIUtils.setSpString("time", UIUtils.currentTime());
     }
 }

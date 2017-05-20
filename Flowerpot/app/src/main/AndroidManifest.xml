@@ -1,38 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lvsijian8.flowerpot" >
+    package="com.lvsijian8.flowerpot"
+    android:versionCode="2"
+    android:versionName="2.3.8" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
-        android:allowBackup="true"
-        android:configChanges="orientation|keyboardHidden|screenSize"
-        android:icon="@mipmap/ic_launcher"
         android:name=".global.GoglePlayApplication"
+        android:allowBackup="false"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:icon="@drawable/icon_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity android:name=".MainActivity" >
-        </activity>
-        <activity android:name=".SignUpFirst" >
-        </activity>
-        <activity android:name=".FirstPicture" >
-        </activity>
-        <activity
-            android:name=".ui.activity.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+        </activity>
+        <activity android:name=".SignUpFirst" >
+        </activity>
+        <activity android:name=".FirstPicture" >
         </activity>
         <activity android:name=".ui.activity.shiyan" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        </activity>
+        <activity android:name=".ui.activity.ContainActivity" >
+        </activity>
+        <activity android:name=".ui.activity.RemoteActivity" >
+        </activity>
+        <activity android:name=".ui.activity.AppendActivity" >
+        </activity>
+        <activity android:name=".ui.activity.DetailActivity" >
+        </activity>
+        <activity android:name=".ui.activity.SearchActivity" >
+        </activity>
+        <activity android:name=".ui.activity.PlantActivity" >
+        </activity>
+        <activity android:name=".ui.activity.FeedbackActivity" >
+        </activity>
+        <activity android:name=".ui.activity.AboutActivity" >
+        </activity>
+        <activity android:name=".ui.activity.GuideActivity" >
+        </activity>
+        <activity android:name=".ui.activity.HistoryActivity" >
+        </activity>
+        <activity android:name=".ui.activity.PilotActivity" >
+        </activity>
+        <activity android:name=".http.TestActivity" >
+        </activity>
+        <activity android:name=".ui.activity.IntroductionActivity" >
+        </activity>
+        <activity android:name=".ui.activity.BatchActivity" >
+        </activity>
+        <activity android:name=".ui.activity.AlertActivity"
+            android:theme="@style/AlertStyle">
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
     </application>
 

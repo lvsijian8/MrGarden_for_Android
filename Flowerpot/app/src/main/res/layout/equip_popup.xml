@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/ivory"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_time_add"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:text="添加"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" />
+    <View
+        android:background="@color/gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_time_batch"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:text="批量操作"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" />
+    <View
+        android:background="@color/gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_time_delete"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:text="删除-长按数据框可完成删除"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" />
+
+</LinearLayout>

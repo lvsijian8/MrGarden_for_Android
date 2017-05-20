@@ -15,11 +15,11 @@
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <ImageButton
-            android:id="@+id/ibtn_find_search"
+        <ImageView
+            android:id="@+id/iv_find_search"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="5dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/search_icon"
@@ -27,6 +27,8 @@
     </RelativeLayout>
     <com.lvsijian8.flowerpot.ui.view.Relistview
         android:id="@+id/lv_find_flower"
+        android:dividerHeight="6dp"
+        android:divider="@color/transparent"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1">

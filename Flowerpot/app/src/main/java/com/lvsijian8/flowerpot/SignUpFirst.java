@@ -12,12 +12,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
-import com.lvsijian8.flowerpot.ui.activity.Main;
+import com.lvsijian8.flowerpot.http.HttpHelper;
+import com.lvsijian8.flowerpot.ui.activity.ContainActivity;
+import com.lvsijian8.flowerpot.utils.UIUtils;
+
 
 public class SignUpFirst extends AppCompatActivity {
     private int sex;
     EditText potnamein;
+    private HttpHelper httpHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,29 @@ public class SignUpFirst extends AppCompatActivity {
         }
         setContentView(R.layout.signupfirst_view);
         getSupportActionBar().hide();
+        httpHelper=HttpHelper.getInstances();
+        httpHelper.setOnConnectionListener(new HttpHelper.OnConnectionListener() {
+            @Override
+            public void successConnect(String data) {
+                if (data != null) {
+                    int code = Integer.parseInt(data);
+                    if (code == 0) {
+                        Toast.makeText(UIUtils.getContext(),"账号不存在，请重新输入",Toast.LENGTH_SHORT).show();
+
+                    } else if (code == 1) {
+
+                    } else if (code == 2) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void failConnect() {
+
+            }
+        });
+
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rg);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -42,17 +70,17 @@ public class SignUpFirst extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String potname = potnamein.getText().toString();
-                Message msg = new Message();
-                msg.what = 0x347;
-                Bundle bundle = new Bundle();
-                String name=MainActivity.getpreferences().getString("name","name");
-                bundle.putString("name",name);
-                bundle.putInt("sex", sex);
-                bundle.putString("potname", potname);
-                msg.setData(bundle);
-                ClientThread.revHandler.sendMessage(msg);
-                Intent intent = new Intent(SignUpFirst.this, Main.class);
+//                Message msg = new Message();
+//                msg.what = 0x347;
+//                Bundle bundle = new Bundle();
+//                String potname = potnamein.getText().toString();
+//                String name=MainActivity.getpreferences().getString("name","name");
+//                bundle.putString("name",name);
+//                bundle.putInt("sex", sex);
+//                bundle.putString("potname", potname);
+//                msg.setData(bundle);
+//                ClientThread.revHandler.sendMessage(msg);
+                Intent intent = new Intent(SignUpFirst.this, ContainActivity.class);
                 startActivity(intent);//以登陆跳转界面
                 finish();
             }
