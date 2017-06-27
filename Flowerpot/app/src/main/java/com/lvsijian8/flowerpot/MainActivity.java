@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -199,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void successConnect(String data) {
                 Message message=new Message();
                 if (data!=null){
-                    Log.e("ZDLW",""+data);
                     int code=Integer.parseInt(data.toString().trim());
                     if (code==-1){
                         message.what=Const.SIGNUP_STATE_REPEAT;

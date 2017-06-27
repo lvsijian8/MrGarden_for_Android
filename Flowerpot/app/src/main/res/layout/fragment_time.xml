@@ -9,6 +9,17 @@
         android:background="@color/green_title"
         android:layout_width="fill_parent"
         android:layout_height="40dp">
+        <com.lvsijian8.flowerpot.ui.view.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
+            android:id="@+id/circle_time_icon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/garden_logo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:border_width="2dp"
+            app:border_color="#FFF"/>
         <TextView
             android:layout_centerInParent="true"
             android:text="设备管理"
@@ -49,6 +60,18 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:indeterminateDrawable="@drawable/relist_progress"/>
+        <Button
+            android:id="@+id/btn_time_append"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:visibility="gone"
+            android:layout_marginTop="200dp"
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_btn"
+            android:text="添加花盆"/>
         <LinearLayout
             android:id="@+id/layout_time_error"
             android:visibility="gone"

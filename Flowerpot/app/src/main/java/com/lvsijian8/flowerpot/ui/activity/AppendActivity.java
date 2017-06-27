@@ -1,30 +1,40 @@
 package com.lvsijian8.flowerpot.ui.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
 import com.lvsijian8.flowerpot.R;
+import com.lvsijian8.flowerpot.domin.Group_data;
 import com.lvsijian8.flowerpot.global.Const;
 import com.lvsijian8.flowerpot.http.HttpHelper;
 import com.lvsijian8.flowerpot.utils.BitmapHelper;
 import com.lvsijian8.flowerpot.utils.UIUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AppendActivity extends AppCompatActivity implements View.OnClickListener {
@@ -58,12 +68,14 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tv_e;//植物英文名
     private BitmapUtils bitmapUtils;
     private HttpHelper httpHelper;
+    private Gson mGson;
     private Handler mhandler =new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case Const.APPEND_STATE_SUCCESS:
                     Toast.makeText(UIUtils.getContext(),"添加花盆成功",Toast.LENGTH_SHORT).show();
+                    Const.isResume=true;
                     if (Const.APPEND_INTSTATE==Const.APPEND_REGISTER){
                         //来自注册页面
                         startActivity(new Intent(AppendActivity.this,ContainActivity.class));
@@ -80,9 +92,40 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
                 case Const.APPEND_STATE_FAIL:
                     Toast.makeText(UIUtils.getContext(),"添加花盆失败，请重试",Toast.LENGTH_SHORT).show();
                     break;
+                case Const.APPEND_STATE_NULL:
+//                    addLast();
+                    break;
+                case STATE_INITIALIZE:
+                    rg_group.removeAllViews();
+                    String de= (String) msg.obj;
+                    Group_data datas=mGson.fromJson(de,Group_data.class);
+                    mGroup=datas.data;
+                    for (Group_data.Data item:mGroup){
+                            addGroup(item);
+                        }
+                    addLast();
+                    break;
+                case STATE_ADDGROUP:
+                    STATE_CURRENT=STATE_INITIALIZE;
+                    httpHelper.getJsonData(Const.URL_NEW_APPEND, mParams);
+                    break;
             }
         }
     };
+    private TextView tv_team;
+    private RadioGroup rg_group;
+    private AlertDialog mDialog;
+    private boolean isTrue;
+
+
+    private static final int STATE_ADDGROUP=0X11111;
+    private static final int STATE_INITIALIZE=0X11100;
+    private int STATE_CURRENT=STATE_INITIALIZE;
+    private ArrayList<Group_data.Data> mGroup;
+    private HashMap<String, Object> mParams;
+    private HashMap<String, Object> parms;
+    private InputMethodManager imm;
+    private EditText mEt_newteam;
 
 
     @Override
@@ -93,30 +136,65 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
         initui();
         initdata();
         httpHelper = HttpHelper.getInstances();
-       httpHelper.setOnDetailgetData(new HttpHelper.OnDetailgetData() {
-           @Override
-           public void successGet(String data) {
-               if (!TextUtils.isEmpty(data)){
-                   String ek=data.toString().trim();
-                   Message message=new Message();
-                   if (ek.equals("success")){
-                       message.what=Const.APPEND_STATE_SUCCESS;
-                   }else {
-                       message.what=Const.APPEND_STATE_FAIL;
-                   }
-                   mhandler.sendMessage(message);
-               }
-           }
+        httpHelper.setOnDetailgetData(new HttpHelper.OnDetailgetData() {
+            @Override
+            public void successGet(String data) {
+                if (!TextUtils.isEmpty(data)) {
+                    String ek = data.toString().trim();
+                    Message message = new Message();
+                    if (ek.equals("success")) {
+                        message.what = Const.APPEND_STATE_SUCCESS;
+                    } else {
+                        //message.what = Const.APPEND_STATE_FAIL;
+                    }
+                    mhandler.sendMessage(message);
+                }
+            }
 
-           @Override
-           public void failGet() {
+            @Override
+            public void failGet() {
 
-           }
-       });
+            }
+        });
+        /**
+         * 联网获取分组信息
+         */
+        httpHelper.setOnConnectionListener(new HttpHelper.OnConnectionListener() {
+            @Override
+            public void successConnect(String data) {
+                Message message=new Message();
+                if (!TextUtils.isEmpty(data)){
+                    if (STATE_CURRENT==STATE_INITIALIZE){
+                        message.obj=data;
+                        message.what=STATE_INITIALIZE;
+                    }else if (STATE_CURRENT==STATE_ADDGROUP){
+
+                        message.what=STATE_ADDGROUP;
+                    }
+                }else {
+                    message.what=Const.APPEND_STATE_NULL;
+
+                }
+                mhandler.sendMessage(message);
+            }
+
+            @Override
+            public void failConnect() {
+
+            }
+        });
+        mParams.put(Const.USER_ID,UIUtils.getSpInt(Const.USER_ID));
+        httpHelper.getJsonData(Const.URL_NEW_APPEND,mParams);
     }
 
     private void initui() {
+        imm = (InputMethodManager) UIUtils.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
         bitmapUtils = BitmapHelper.getBitmapUtils();
+        mGson = new Gson();
+        mGroup = new ArrayList<>();
+        mParams = new HashMap<>();
+        parms = new HashMap<>();
         view_seekbar = View.inflate(this, R.layout.layout_seekbar, null);
         mseekBar = (SeekBar) view_seekbar.findViewById(R.id.seekbar_SeekBar);
         tv_num = (TextView) view_seekbar.findViewById(R.id.tv_SeekBar_num);
@@ -124,6 +202,8 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
         tv_max= (TextView) view_seekbar.findViewById(R.id.tv_SeekBar_max);
         tv_unit= (TextView) view_seekbar.findViewById(R.id.tv_SeekBar_unit);
         et_flowername= (EditText) findViewById(R.id.ed_append_flowername);
+        tv_team = (TextView) findViewById(R.id.tv_append_team);
+        rg_group = (RadioGroup) findViewById(R.id.rg_append_group);
         bt_bottle_day= (Button) findViewById(R.id.bt_bottle_day);
         bt_bottle_time= (Button) findViewById(R.id.bt_bottle_time);
         bt_bottle_ml= (Button) findViewById(R.id.bt_bottle_ml);
@@ -153,25 +233,26 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
                         num_bottle_day = tv_num.getText().toString().trim();
                         break;
                     case STATE_BOTTLE_TIME:
-                        num_bottle_time= tv_num.getText().toString().trim();
+                        num_bottle_time = tv_num.getText().toString().trim();
                         break;
                     case STATE_BOTTLE_ML:
-                        num_bottle_ml= tv_num.getText().toString().trim();
+                        num_bottle_ml = tv_num.getText().toString().trim();
                         break;
                     case STATE_WATER_DAY:
-                        num_water_day= tv_num.getText().toString().trim();
+                        num_water_day = tv_num.getText().toString().trim();
                         break;
                     case STATE_WATER_TIME:
-                        num_water_time= tv_num.getText().toString().trim();
+                        num_water_time = tv_num.getText().toString().trim();
                         break;
                     case STATE_WATER_ML:
-                        num_water_ml= tv_num.getText().toString().trim();
+                        num_water_ml = tv_num.getText().toString().trim();
                         break;
                 }
 
 
             }
         });
+        initTeamAlert();
 
     }
 
@@ -204,6 +285,8 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
 
             }
         });
+        addLast();
+
     }
 
     @Override
@@ -222,6 +305,84 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
            }
 
     }
+
+    /**
+     * 添加新组的操作
+     */
+    private void initTeamAlert(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(AppendActivity.this);
+        builder.setTitle("新增的组名");
+        mEt_newteam = new EditText(UIUtils.getContext());
+        mEt_newteam.setTextColor(Color.BLACK);
+        builder.setView(mEt_newteam);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                imm.hideSoftInputFromWindow(mEt_newteam.getWindowToken(),0);
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!TextUtils.isEmpty(mEt_newteam.getText().toString().trim())) {
+                    STATE_CURRENT = STATE_ADDGROUP;
+                    mParams.put("group_name", mEt_newteam.getText().toString().trim());
+                    httpHelper.getJsonData(Const.URL_ADDGROUP, mParams);
+                }
+                imm.hideSoftInputFromWindow(mEt_newteam.getWindowToken(),0);
+            }
+        });
+        mDialog = builder.create();
+    }
+
+    /**
+     * 根据元素排布RadioGroup
+     */
+    private void addGroup(final Group_data.Data group){
+        final RadioButton button=new RadioButton(AppendActivity.this);
+        button.setText(group.group_name);
+        button.setBackgroundResource(R.drawable.btn_team);
+        button.setButtonDrawable(new ColorDrawable());
+        button.setTextColor(getResources().getColor(R.color.white));
+        button.setPadding(5, 5, 5, 5);
+        button.setGravity(Gravity.CENTER);
+        final RadioGroup.LayoutParams params=new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 6, 0);
+        rg_group.addView(button, params);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_team.setText("组："+button.getText().toString());
+                parms.put("group_id", group.group_id + "");
+                isTrue=true;
+            }
+        });
+    }
+
+    private void addLast(){
+        final RadioButton button=new RadioButton(AppendActivity.this);
+        button.setText("  +  ");
+        button.setBackgroundResource(R.drawable.btn_team);
+        button.setButtonDrawable(new ColorDrawable());
+        button.setTextColor(getResources().getColor(R.color.white));
+        button.setPadding(5, 5, 5, 5);
+        button.setGravity(Gravity.CENTER);
+        RadioGroup.LayoutParams params=new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 6, 0);
+        rg_group.addView(button, params);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.show();
+                imm.showSoftInput(mEt_newteam, InputMethodManager.RESULT_SHOWN);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
+                        InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+            }
+        });
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -310,17 +471,20 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
                 if (fid!=-1){
                     String name=et_flowername.getText().toString().trim();
                     if (!TextUtils.isEmpty(name)){
-                        HashMap<String,Object> parms=new HashMap<>();
-                        parms.put(Const.USER_ID,UIUtils.getSpInt(Const.USER_ID)+"");
-                        parms.put("fid",fid+"");
-                        parms.put("flowername",name);
-                        parms.put("num_bottle_day",num_bottle_day);
-                        parms.put("num_bottle_time",num_bottle_time);
-                        parms.put("num_bottle_ml",num_bottle_ml);
-                        parms.put("num_water_day",num_water_day);
-                        parms.put("num_water_time",num_water_time);
-                        parms.put("num_water_ml",num_water_ml);
-                        httpHelper.getDetailData(Const.URL_APPEND, parms);
+                       if (isTrue){
+                           parms.put(Const.USER_ID, UIUtils.getSpInt(Const.USER_ID) + "");
+                           parms.put("fid", fid + "");
+                           parms.put("flowername", name);
+                           parms.put("num_bottle_day", num_bottle_day);
+                           parms.put("num_bottle_time", num_bottle_time);
+                           parms.put("num_bottle_ml", num_bottle_ml);
+                           parms.put("num_water_day", num_water_day);
+                           parms.put("num_water_time", num_water_time);
+                           parms.put("num_water_ml", num_water_ml);
+                           httpHelper.getDetailData(Const.URL_APPEND, parms);
+                       }else {
+                           Toast.makeText(UIUtils.getContext(),"您未选择组别",Toast.LENGTH_SHORT).show();
+                       }
                     }else {
                         Toast.makeText(UIUtils.getContext(),"您没给花盆命名",Toast.LENGTH_SHORT).show();
                     }
@@ -341,7 +505,7 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
     //双击返回的逻辑处理
     @Override
     public void onBackPressed() {
-        //当前界面由注册页面进入时，设置双击退出
+        //由注册页面进入时，设置双击退出
         if (Const.APPEND_INTSTATE==Const.APPEND_REGISTER){
             long progress= System.currentTimeMillis();
             if (progress-back_time>2000){
@@ -355,4 +519,35 @@ public class AppendActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (httpHelper!=null){
+            httpHelper.setOnConnectionListener(new HttpHelper.OnConnectionListener() {
+                @Override
+                public void successConnect(String data) {
+                    Message message = new Message();
+                    if (!TextUtils.isEmpty(data)) {
+                        if (STATE_CURRENT == STATE_INITIALIZE) {
+                            message.obj = data;
+                            message.what = STATE_INITIALIZE;
+                        } else if (STATE_CURRENT == STATE_ADDGROUP) {
+
+                            message.what = STATE_ADDGROUP;
+                        }
+                    } else {
+                        message.what = Const.APPEND_STATE_NULL;
+
+                    }
+                    mhandler.sendMessage(message);
+                }
+
+                @Override
+                public void failConnect() {
+
+                }
+            });
+        }
+    }
 }

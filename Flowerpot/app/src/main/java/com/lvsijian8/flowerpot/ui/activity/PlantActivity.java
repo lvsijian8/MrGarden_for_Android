@@ -63,8 +63,6 @@ public class PlantActivity extends AppCompatActivity {
         HashMap<String,Object> map=new HashMap<String, Object>();
         map.put("fid", 0 + "");
         httpHelper.getJsonData(Const.URL_FIND, map);
-
-
         httpHelper.setOnConnectionListener(new HttpHelper.OnConnectionListener() {
             @Override
             public void successConnect(String data) {
@@ -201,8 +199,8 @@ public class PlantActivity extends AppCompatActivity {
                         //加载更多数据的情况
                         for (Flower_Find.flower f:data){
                             fdata.add(f);
-                            listView.Closeloading();
                         }
+                        listView.Closeloading();
                     }
                     myAdapter.notifyDataSetChanged();
                     break;

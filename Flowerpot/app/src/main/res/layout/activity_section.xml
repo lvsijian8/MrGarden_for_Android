@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_line"
+    android:orientation="vertical"
+    tools:context="com.lvsijian8.flowerpot.ui.activity.SectionActivity">
+    <RelativeLayout
+        android:background="@color/green_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <com.lvsijian8.flowerpot.ui.view.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
+            android:id="@+id/circle_section_icon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/garden_logo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:border_width="2dp"
+            app:border_color="#FFF"/>
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="数据报表"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_section_append"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_btn"
+        android:text="添加花盆"/>
+    <ScrollView
+        android:id="@+id/sl_section_sc"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/ll_section_contain"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

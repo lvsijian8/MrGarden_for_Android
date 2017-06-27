@@ -3,7 +3,6 @@ package com.lvsijian8.flowerpot.utils;
 
 import com.lidroid.xutils.BitmapUtils;
 import com.lvsijian8.flowerpot.R;
-import com.lvsijian8.flowerpot.utils.UIUtils;
 
 /**
  * 获取BitmapUtils对象, 保证多个模块共用一个BitmapUtils对象,避免内存溢出

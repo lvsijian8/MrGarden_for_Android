@@ -1,9 +1,11 @@
 package com.lvsijian8.flowerpot.ui.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +39,33 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     private void initdata() {
-
-        for (int i=0;i<5;i++){
+        //获取屏幕宽高
+        int ScreenWidth=getWindowManager().getDefaultDisplay().getWidth();
+        int ScreenHeight=getWindowManager().getDefaultDisplay().getHeight();
+        for (int i=0;i<resours.length;i++){
             ImageView imageView=new ImageView(UIUtils.getContext());
-            imageView.setBackgroundResource(resours[i]);
+
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.inJustDecodeBounds=true;//不去真实解析bitmap，而是查询宽高信息
+            BitmapFactory.decodeResource(getResources(), resours[i],options);
+            //获取图片宽高
+            int scale=1;
+//            int picWidth=options.outWidth;
+//            int picHeight=options.outHeight;
+//            int dx=picWidth/ScreenWidth;
+//            int dy=picHeight/ScreenHeight;
+//            if (dx>=dy&&dy>1){
+//                scale=dx;
+//            }
+//            if (dy>=dx&&dx>1){
+//                scale=dy;
+//            }
+//            Log.e("ZDLW","picWidth: "+picWidth+"  picHeight: "+picHeight+" ScreenWidth: "+ScreenWidth+" ScreenHeight: "+ScreenHeight);
+            scale=2;
+            options.inSampleSize=scale;
+            options.inJustDecodeBounds=false;
+            Bitmap bitmap=BitmapFactory.decodeResource(getResources(), resours[i], options);
+            imageView.setImageBitmap(bitmap);
             list_guide.add(imageView);
         }
         vp_guide.setAdapter(new MyAdapter());

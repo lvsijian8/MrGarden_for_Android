@@ -15,6 +15,10 @@ public class Const {
      */
     public static final int RECEIVE_DATA_FAIL=1;
     /**
+     * 接收网络数据为空
+     */
+    public static final int RECEIVE_DATA_NUll=2;
+    /**
      * 施肥成功
      */
     public static final int REMOTE_BOTTLE_SUCCESS=0X11;
@@ -66,6 +70,12 @@ public class Const {
      * 添加花盆失败
      */
     public static final int APPEND_STATE_FAIL=0X23;
+    /**
+     * 花盆为空
+     */
+    public static final int APPEND_STATE_NULL=0X24;
+
+    public static final int SERVICE_REMOTER=0X25;
 
     public static final String USER_ID="user_id";
     public static final String USER_NAME="user_name";
@@ -74,8 +84,8 @@ public class Const {
     public static final String FLOWER_NAME="flower_name";
 
     /*-------------------连接后台的地址-----------------------------------------*/
-//    public static final String URL_PATH ="http://172.16.60.25:8080/MrFlower/";
-    public static final String URL_PATH ="https://lvsijian.cn/MrFlower/";
+//    public static final String URL_PATH ="http://172.16.60.25:8080/MrGarden/";
+    public static final String URL_PATH ="https://lvsijian.cn/MrGarden/";
     public static final String URL_LOGIN= URL_PATH +"loginAndroid";//登录
     public static final String URL_SIGNUP= URL_PATH +"signupAndroid";//注册
     public static final String URL_DATA= URL_PATH+"fdataAndroid";//消息列表
@@ -87,6 +97,7 @@ public class Const {
     public static final String URL_BOTTLE= URL_PATH +"";//浇营养液
     public static final String URL_WATER= URL_PATH +"";//浇水
     public static final String URL_APPEND= URL_PATH +"appendAndroid";//添加花盆
+    public static final String URL_ADDGROUP= URL_PATH +"addGroupAndroid";//添加花盆
     public static final String URL_FEEDBACK=URL_PATH+"askMeAndroid";//反馈信息
     public static final String URL_UPDATA=URL_PATH+"updata/updataAndroid.json";//更新
     public static final String URL_SEARCH=URL_PATH+"searchAndroid";//搜寻植物
@@ -101,6 +112,13 @@ public class Const {
     public static final String URL_BATCH_BOTTLE=URL_PATH+"bottleAllAndroid";//批量操作-施肥
     public static final String URL_GETINFO=URL_PATH+"getUserAndroid";//获取要修改资料的用户的信息
     public static final String URL_ALERTINFO=URL_PATH+"changeUserAndroid";//修改资料
+    public static final String URL_SCHOOL=URL_PATH+"schoolListAndroid";//学校资料列表
+//    public static final String URL_FORGET=URL_PATH+"schoolListAndroid";//找回密码
+    public static final String URL_NEW_DATA=URL_PATH+"gdataAndroid";
+    public static final String URL_GET_MENU=URL_PATH+"getGroupPotAndroid";
+    public static final String URL_NEW_TIME=URL_PATH+"deviceAndroid";
+    public static final String URL_NEW_APPEND=URL_PATH+"getGroupAndroid";
+    public static final String URL_FORGET="http://172.16.60.25:8080/MrGarden/findPwdAndroid";//找回密码
     /*--------------------------------------------------------------------------*/
 
     /*-------------------用于添加页面返回和进入下一个界面时的判断---------------------------*/
@@ -133,6 +151,11 @@ public class Const {
     public static  int REMOTE_STATE=REMOTE_CONNECTION;
     /*---------------------------------------------------------------------------*/
 
+    public static final int MENU_STATE_DATA=0;
+    public static final int MENU_STATE_TIME=1;
+    public static int MENU_STATE_CURRENT=MENU_STATE_DATA;
+    /*---------------------------------------------------------------------------*/
+    public static boolean isResume;
 
 
 

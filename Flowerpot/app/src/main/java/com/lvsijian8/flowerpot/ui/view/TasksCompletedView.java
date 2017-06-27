@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Paint.FontMetrics;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.lvsijian8.flowerpot.R;

@@ -7,8 +7,9 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="colorPrimaryDark">@color/green_ationbar</item>
+        <item name="android:windowBackground">@android:color/white</item>//背景颜色
+        <item name="colorPrimaryDark">@color/green_ationbar</item>//时间格的颜色
+       
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
 
@@ -31,7 +32,7 @@
     </style>
 
     <style name="AlertStyle" parent="AppTheme">
-        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="android:windowSoftInputMode">stateVisible|adjustResize</item>
     </style>
 
 </resources>

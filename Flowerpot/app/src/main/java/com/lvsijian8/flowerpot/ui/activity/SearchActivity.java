@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
@@ -30,8 +29,6 @@ import com.lvsijian8.flowerpot.http.HttpHelper;
 import com.lvsijian8.flowerpot.utils.BitmapHelper;
 import com.lvsijian8.flowerpot.utils.UIUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

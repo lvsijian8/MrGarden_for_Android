@@ -10,58 +10,70 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
-        android:name=".global.GoglePlayApplication"
+        android:name="com.lvsijian8.flowerpot.global.GoglePlayApplication"
         android:allowBackup="false"
         android:configChanges="orientation|keyboardHidden|screenSize"
-        android:icon="@drawable/icon_logo"
+        android:icon="@drawable/garden_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".MainActivity" >
-        </activity>
-        <activity android:name=".SignUpFirst" >
-        </activity>
-        <activity android:name=".FirstPicture" >
-        </activity>
-        <activity android:name=".ui.activity.shiyan" >
-        </activity>
-        <activity android:name=".ui.activity.ContainActivity" >
-        </activity>
-        <activity android:name=".ui.activity.RemoteActivity" >
-        </activity>
-        <activity android:name=".ui.activity.AppendActivity" >
-        </activity>
-        <activity android:name=".ui.activity.DetailActivity" >
-        </activity>
-        <activity android:name=".ui.activity.SearchActivity" >
-        </activity>
-        <activity android:name=".ui.activity.PlantActivity" >
-        </activity>
-        <activity android:name=".ui.activity.FeedbackActivity" >
-        </activity>
-        <activity android:name=".ui.activity.AboutActivity" >
-        </activity>
-        <activity android:name=".ui.activity.GuideActivity" >
-        </activity>
-        <activity android:name=".ui.activity.HistoryActivity" >
-        </activity>
-        <activity android:name=".ui.activity.PilotActivity" >
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.PilotActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".http.TestActivity" >
+        <activity android:name="com.lvsijian8.flowerpot.MainActivity" >
         </activity>
-        <activity android:name=".ui.activity.IntroductionActivity" >
+        <activity android:name="com.lvsijian8.flowerpot.SignUpFirst" >
         </activity>
-        <activity android:name=".ui.activity.BatchActivity" >
+        <activity android:name="com.lvsijian8.flowerpot.FirstPicture" >
         </activity>
-        <activity android:name=".ui.activity.AlertActivity"
-            android:theme="@style/AlertStyle">
-
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.LoginActivity" >
         </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.RegisterActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.ContainActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.RemoteActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.AppendActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.DetailActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.SearchActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.PlantActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.FeedbackActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.AboutActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.GuideActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.HistoryActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.http.TestActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.IntroductionActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.BatchActivity" >
+        </activity>
+        <activity
+            android:name="com.lvsijian8.flowerpot.ui.activity.AlertActivity"
+            android:theme="@style/AlertStyle" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.SchoolActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.SchoolDetailActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.ForgetPwdActivity" >
+        </activity>
+        <activity android:name="com.lvsijian8.flowerpot.ui.activity.SectionActivity" >
+        </activity>
+        //------------------------------------------------------------------------------------------
+        <service android:name="com.lvsijian8.flowerpot.service.RemoterService"/>
     </application>
 
 </manifest>

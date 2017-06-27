@@ -26,7 +26,6 @@ import com.lvsijian8.flowerpot.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class BatchActivity extends AppCompatActivity implements View.OnClickListener {
 

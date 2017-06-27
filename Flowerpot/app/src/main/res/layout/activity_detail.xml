@@ -63,19 +63,19 @@
                 android:layout_marginTop="15dp"/>
 
             <com.lvsijian8.flowerpot.ui.view.DetailItem
-                xmlns:lw="http://schemas.android.com/apk/res-auto"
+                xmlns:lw="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
                 android:id="@+id/item_detail_water"
                 lw:name="浇水"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"></com.lvsijian8.flowerpot.ui.view.DetailItem>
             <com.lvsijian8.flowerpot.ui.view.DetailItem
-                xmlns:lw="http://schemas.android.com/apk/res-auto"
+                xmlns:lw="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
                 android:id="@+id/item_detail_light"
                 lw:name="日照"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"></com.lvsijian8.flowerpot.ui.view.DetailItem>
             <com.lvsijian8.flowerpot.ui.view.DetailItem
-                xmlns:lw="http://schemas.android.com/apk/res-auto"
+                xmlns:lw="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
                 android:id="@+id/item_detail_yinyang"
                 lw:name="肥料"
                 android:layout_width="fill_parent"

@@ -6,14 +6,13 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.lvsijian8.flowerpot.MainActivity;
 import com.lvsijian8.flowerpot.R;
 
 public class PilotActivity extends AppCompatActivity {
     private Handler mhandle=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            startActivity(new Intent(PilotActivity.this, MainActivity.class));
+            startActivity(new Intent(PilotActivity.this, LoginActivity.class));
             finish();
         }
     };

@@ -1,0 +1,20 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="7dp"
+    android:background="@drawable/bg_shape"
+    android:layout_width="fill_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_section_name"
+        android:text="温度"
+        android:textSize="18dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart_section_temperature"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+</LinearLayout>

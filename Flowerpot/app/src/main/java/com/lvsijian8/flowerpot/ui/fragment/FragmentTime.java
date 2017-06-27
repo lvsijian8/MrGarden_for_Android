@@ -4,14 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,15 +33,22 @@ import com.lvsijian8.flowerpot.global.Const;
 import com.lvsijian8.flowerpot.http.HttpHelper;
 import com.lvsijian8.flowerpot.ui.activity.AppendActivity;
 import com.lvsijian8.flowerpot.ui.activity.BatchActivity;
+import com.lvsijian8.flowerpot.ui.activity.ContainActivity;
 import com.lvsijian8.flowerpot.ui.activity.HistoryActivity;
 import com.lvsijian8.flowerpot.ui.activity.RemoteActivity;
+import com.lvsijian8.flowerpot.ui.view.CircleImageView;
 import com.lvsijian8.flowerpot.utils.UIUtils;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.MenuParams;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
-public class FragmentTime extends Fragment {
+public class FragmentTime extends Fragment  {
     private ImageView ibtn_edit;
     private PopupWindow mPopupWindow;
     private LinearLayout contain;
@@ -55,11 +62,18 @@ public class FragmentTime extends Fragment {
     private ProgressBar pb_loading;
     private HashMap<String, Object> params;
     private Gson gson;
-    private static int delete_position;
+    private static int delete_position;//标识删除的Item的position
+    private FragmentManager fragmentManager;
+    private ContextMenuDialogFragment mMenuDialogFragment;
+    private Button btn_append;
+    private CircleImageView iv_logo;
+    private ContainActivity mContainActivity;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Const.MENU_STATE_CURRENT= Const.MENU_STATE_TIME;
         if (rootview ==null){
             rootview = inflater.inflate(R.layout.fragment_time, container, false);
         }
@@ -75,11 +89,15 @@ public class FragmentTime extends Fragment {
 
 
     private void initui(){
+        mContainActivity = (ContainActivity) getActivity();
+        fragmentManager=getActivity().getSupportFragmentManager();
         contain = (LinearLayout) rootview.findViewById(R.id.layout_time_contain);
         ibtn_edit= (ImageView) rootview.findViewById(R.id.ibtn_time_edit);
+        iv_logo = (CircleImageView) rootview.findViewById(R.id.circle_time_icon);
         lv_item= (ListView) rootview.findViewById(R.id.lv_time_item);
         ll_error = (LinearLayout) rootview.findViewById(R.id.layout_time_error);
         btn_error = (Button) rootview.findViewById(R.id.btn_time_error);
+        btn_append = (Button) rootview.findViewById(R.id.btn_time_append);
         pb_loading = (ProgressBar) rootview.findViewById(R.id.progress_time_loading);
         adapter=new MyAdapter();
         potdata =new ArrayList<>();
@@ -90,17 +108,21 @@ public class FragmentTime extends Fragment {
 
     private void initdata() {
         initHttp();
+        initMenu();
         View popup=View.inflate(UIUtils.getContext(),R.layout.equip_popup,null);
         setPopup(popup);
         ibtn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mPopupWindow != null) {
-                    if (!mPopupWindow.isShowing()) {
-                        mPopupWindow.showAtLocation(contain, Gravity.BOTTOM, 0, 0);
-                    } else {
-                        mPopupWindow.dismiss();
-                    }
+                //                if (mPopupWindow != null) {
+                //                    if (!mPopupWindow.isShowing()) {
+                //                        mPopupWindow.showAtLocation(contain, Gravity.BOTTOM, 0, 0);
+                //                    } else {
+                //                        mPopupWindow.dismiss();
+                //                    }
+                //                }
+                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
                 }
             }
         });
@@ -115,8 +137,80 @@ public class FragmentTime extends Fragment {
                 initHttp();
             }
         });
+        btn_append.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //添加组
+                Const.APPEND_INTSTATE=Const.APPEND_POT;
+                getActivity().startActivity(new Intent(getActivity(), AppendActivity.class));
+            }
+        });
+        iv_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContainActivity.OpenMenu();
+            }
+        });
     }
 
+    /**
+     * ContextMenu菜单
+     */
+    private void initMenu() {
+        MenuParams menuParams = new MenuParams();
+        menuParams.setActionBarSize(UIUtils.dip2px(56));
+        menuParams.setMenuObjects(getMenuObjects());
+        menuParams.setClosableOutside(false);
+        mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
+        mMenuDialogFragment.setItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(View clickedView, int position) {
+                switch (position) {
+                    case 1:
+                        //进入添加花盆的界面
+                        Const.APPEND_INTSTATE = Const.APPEND_POT;
+                        getActivity().startActivity(new Intent(getActivity(), AppendActivity.class));
+                        break;
+                    case 2:
+                        UIUtils.makeText("长按花盆可删除");
+                        break;
+                    case 3:
+                        getActivity().startActivity(new Intent(getActivity(), BatchActivity.class));
+                        break;
+                }
+            }
+        });
+//        mMenuDialogFragment.setItemLongClickListener(this);
+    }
+
+    /**
+     * ContextMenu的菜单按钮样式
+     * @return
+     */
+    private List<MenuObject> getMenuObjects(){
+        List<MenuObject> menuObjects = new ArrayList<>();
+
+        MenuObject menu_close = new MenuObject();
+        menu_close.setResource(R.drawable.icon_close);
+
+        MenuObject menu_add = new MenuObject("添加");
+        menu_add.setResource(R.drawable.icon_add);
+
+        MenuObject menu_delete = new MenuObject("删除");
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.icon_delete);
+        menu_delete.setBitmap(b);
+
+        MenuObject menu_batch = new MenuObject("批量操作");
+        BitmapDrawable bd = new BitmapDrawable(getResources(),
+                BitmapFactory.decodeResource(getResources(), R.drawable.icon_batch));
+        menu_batch.setDrawable(bd);
+
+        menuObjects.add(menu_close);
+        menuObjects.add(menu_add);
+        menuObjects.add(menu_delete);
+        menuObjects.add(menu_batch);
+        return menuObjects;
+    }
 
 
     private void initHttp() {
@@ -131,12 +225,15 @@ public class FragmentTime extends Fragment {
         httpHelper.setOnTimegetData(new HttpHelper.OnTimegetData() {
             @Override
             public void successGet(String data) {
-                if (!TextUtils.isEmpty(data)){
-                    Message message = new Message();
-                    message.obj=data;
+                Message message = new Message();
+                Log.e("ZDLW", "data: " + data + "");
+                if (!TextUtils.isEmpty(data)) {
+                    message.obj = data;
                     message.what = Const.RECEIVE_DATA_SUCCESS;
-                    mhandler.sendMessage(message);
+                } else {
+                    message.what = Const.RECEIVE_DATA_NUll;
                 }
+                mhandler.sendMessage(message);
             }
 
             @Override
@@ -152,22 +249,22 @@ public class FragmentTime extends Fragment {
                 UIUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(UIUtils.getContext(),"删除失败，请重试",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UIUtils.getContext(), "删除失败，请重试", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void onResponse(String data) {
-                if (!TextUtils.isEmpty(data)){
-                    final int code=Integer.parseInt(data);
+                if (!TextUtils.isEmpty(data)) {
+                    final int code = Integer.parseInt(data);
                     UIUtils.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (code==0){
-                                Toast.makeText(UIUtils.getContext(),"删除失败，请重试",Toast.LENGTH_SHORT).show();
-                            }else if (code==1){
-                                Toast.makeText(UIUtils.getContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                            if (code == 0) {
+                                Toast.makeText(UIUtils.getContext(), "删除失败，请重试", Toast.LENGTH_SHORT).show();
+                            } else if (code == 1) {
+                                Toast.makeText(UIUtils.getContext(), "删除成功", Toast.LENGTH_SHORT).show();
                                 potdata.remove(delete_position);//移除Item
                                 adapter.notifyDataSetChanged();//刷新listview
                             }
@@ -178,6 +275,12 @@ public class FragmentTime extends Fragment {
         });
         httpHelper.getTimeData(Const.URL_DEVICE, params);
     }
+
+    public void MenuTimeData(HashMap<String,Object> map){
+        httpHelper.getTimeData(Const.URL_NEW_TIME, map);
+    }
+
+
 
     private void setPopup(View popupView){
         mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
@@ -206,6 +309,17 @@ public class FragmentTime extends Fragment {
         });
 
 
+    }
+
+    /**
+     * 进入远程控制界面
+     */
+    public void EnterRemoter(int pot_id,int state){
+        Intent intent=new Intent(getActivity(), RemoteActivity.class);
+        intent.putExtra("POTID", pot_id);
+        intent.putExtra("state", state);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
     }
 
 
@@ -264,11 +378,7 @@ public class FragmentTime extends Fragment {
             holder.remote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(getActivity(), RemoteActivity.class);
-                    intent.putExtra("POTID", potdata.pot_id);
-                    intent.putExtra("state", potdata.state);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                    EnterRemoter(potdata.pot_id, potdata.state);
                 }
             });
             //刷新当前数据
@@ -325,11 +435,19 @@ public class FragmentTime extends Fragment {
                     pb_loading.setVisibility(View.GONE);
                     lv_item.setVisibility(View.VISIBLE);
                     ll_error.setVisibility(View.GONE);
+                    btn_append.setVisibility(View.GONE);
                     String dataString= (String) msg.obj;
                     Log.e("ZDLW",dataString);
                     RemotePot remotePot=gson.fromJson(dataString, RemotePot.class);
                     potdata =remotePot.data;//获取数据
                     adapter.notifyDataSetChanged();
+                    break;
+                case Const.RECEIVE_DATA_NUll:
+                    pb_loading.setVisibility(View.GONE);
+                    lv_item.setVisibility(View.GONE);
+                    ll_error.setVisibility(View.GONE);
+                    btn_append.setVisibility(View.VISIBLE);
+                    UIUtils.makeText("未添加花盆，请添加");
                     break;
                 case Const.RECEIVE_DATA_FAIL:
                     //获取数据失败，隐藏数据View，显示藏重试View,隐藏读取View
@@ -337,6 +455,7 @@ public class FragmentTime extends Fragment {
                     pb_loading.setVisibility(View.GONE);
                     lv_item.setVisibility(View.GONE);
                     ll_error.setVisibility(View.VISIBLE);
+                    btn_append.setVisibility(View.GONE);
                     break;
             }
         }
@@ -361,6 +480,8 @@ public class FragmentTime extends Fragment {
                         message.obj=data;
                         message.what = Const.RECEIVE_DATA_SUCCESS;
                         mhandler.sendMessage(message);
+                    }else {
+
                     }
                 }
 

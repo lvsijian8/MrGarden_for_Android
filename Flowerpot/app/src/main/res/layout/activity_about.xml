@@ -75,7 +75,7 @@
     </LinearLayout>
 
     <com.lvsijian8.flowerpot.ui.view.TasksCompletedView
-        xmlns:lw="http://schemas.android.com/apk/res-auto"
+        xmlns:lw="http://schemas.android.com/apk/res/com.lvsijian8.flowerpot"
         android:id="@+id/tasks_about"
         android:layout_width="fill_parent"
         android:layout_height="80dp"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_line"
+    tools:context="com.lvsijian8.flowerpot.ui.activity.PlantActivity">
+
+    <RelativeLayout
+        android:background="@color/green_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_centerInParent="true"
+            android:text="选择您的花盆"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <com.lvsijian8.flowerpot.ui.view.Relistview
+        android:paddingLeft="2dp"
+        android:id="@+id/lv_school_all"
+        android:layout_width="fill_parent"
+        android:dividerHeight="6dp"
+        android:divider="@color/transparent"
+        android:layout_height="fill_parent"></com.lvsijian8.flowerpot.ui.view.Relistview>
+</LinearLayout>

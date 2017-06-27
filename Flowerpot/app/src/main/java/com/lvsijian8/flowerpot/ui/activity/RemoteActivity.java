@@ -1,28 +1,30 @@
 package com.lvsijian8.flowerpot.ui.activity;
 
 import android.app.AlertDialog;
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -31,10 +33,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lvsijian8.flowerpot.R;
-import com.lvsijian8.flowerpot.db.FlowerDb;
 import com.lvsijian8.flowerpot.domin.RemoterDetailPot;
 import com.lvsijian8.flowerpot.global.Const;
 import com.lvsijian8.flowerpot.http.HttpHelper;
+import com.lvsijian8.flowerpot.service.RemoterService;
 import com.lvsijian8.flowerpot.ui.view.MySeekBar;
 import com.lvsijian8.flowerpot.utils.UIUtils;
 
@@ -87,6 +89,21 @@ public class RemoteActivity extends AppCompatActivity {
     private int PotID;//花盆的ID
     private int pot_state;
 
+    private Messenger ActivityMessenger;
+    private Messenger ServicerMessenger;
+    private ServiceConnection mConnection=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ServicerMessenger=new Messenger(service);
+            starConnection();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +120,7 @@ public class RemoteActivity extends AppCompatActivity {
         Const.REMOTE_STATE=Const.REMOTE_CONNECTION;
         httpHelper = HttpHelper.getInstances();
         gson=new Gson();
+        ActivityMessenger=new Messenger(mHandler);
         tv_temperature= (TextView) findViewById(R.id.tv_remote_temperature);
         tv_battery= (TextView) findViewById(R.id.tv_remote_battery);
         tv_humidity= (TextView) findViewById(R.id.tv_remote_humidity);
@@ -136,49 +154,48 @@ public class RemoteActivity extends AppCompatActivity {
                 switch (mCurrent) {
                     //设置浇水数据
                     case isWaterManager:
-                        if (pot_state==0){
-                            Toast.makeText(UIUtils.getContext(),"当前设备已离线",Toast.LENGTH_SHORT).show();
+                        if (pot_state == 0) {
+                            Toast.makeText(UIUtils.getContext(), "当前设备已离线", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         //CURRENT设置为浇水管理
-                        Const.REMOTE_STATE=Const.REMOTE_WATER_MANAGER;
+                        Const.REMOTE_STATE = Const.REMOTE_WATER_MANAGER;
 
-                        num_water_day = seekBar_day.getProgress()+"";
-                        num_water_time = seekBar_time.getProgress()+"";
-                        num_water_ml = seekBar_ml.getProgress()+"";
+                        num_water_day = seekBar_day.getProgress() + "";
+                        num_water_time = seekBar_time.getProgress() + "";
+                        num_water_ml = seekBar_ml.getProgress() + "";
 
                         params.clear();
                         params.put(Const.USER_ID, UIUtils.getSpInt(Const.USER_ID) + "");//用户ID
                         params.put("pot_id", PotID + "");//花盆ID
-                        params.put("num_water_day",num_water_day);//浇水的数据
-                        params.put("num_water_time",num_water_time);
-                        params.put("num_water_ml",num_water_ml);
+                        params.put("num_water_day", num_water_day);//浇水的数据
+                        params.put("num_water_time", num_water_time);
+                        params.put("num_water_ml", num_water_ml);
                         //设置新的浇水数据
-                        HttpHelper.OkClient(Const.URL_SETWATER,params);
+                        HttpHelper.OkClient(Const.URL_SETWATER, params);
                         break;
 
                     //设置施肥数据
                     case isBottleManager:
-                        if (pot_state==0){
-                            Toast.makeText(UIUtils.getContext(),"当前设备已离线",Toast.LENGTH_SHORT).show();
+                        if (pot_state == 0) {
+                            Toast.makeText(UIUtils.getContext(), "当前设备已离线", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Log.e("ZDLW","ASDASD");
                         //CURRENT设置为施肥管理
-                        Const.REMOTE_STATE=Const.REMOTE_BOTTLE_MANAGER;
+                        Const.REMOTE_STATE = Const.REMOTE_BOTTLE_MANAGER;
 
-                        num_bottle_day = seekBar_day.getProgress()+"";
-                        num_bottle_time = seekBar_time.getProgress()+"";
-                        num_bottle_ml = seekBar_ml.getProgress()+"";
+                        num_bottle_day = seekBar_day.getProgress() + "";
+                        num_bottle_time = seekBar_time.getProgress() + "";
+                        num_bottle_ml = seekBar_ml.getProgress() + "";
 
                         params.clear();
-                        params.put(Const.USER_ID,UIUtils.getSpInt(Const.USER_ID)+"");//用户ID
-                        params.put("pot_id",PotID+"");//花盆ID
-                        params.put("num_bottle_day",num_bottle_day);//施肥的数据
-                        params.put("num_bottle_time",num_bottle_time);
-                        params.put("num_bottle_ml",num_bottle_ml);
+                        params.put(Const.USER_ID, UIUtils.getSpInt(Const.USER_ID) + "");//用户ID
+                        params.put("pot_id", PotID + "");//花盆ID
+                        params.put("num_bottle_day", num_bottle_day);//施肥的数据
+                        params.put("num_bottle_time", num_bottle_time);
+                        params.put("num_bottle_ml", num_bottle_ml);
                         //设置新的施肥数据
-                        HttpHelper.OkClient(Const.URL_SETBOTTLE,params);
+                        HttpHelper.OkClient(Const.URL_SETBOTTLE, params);
                         break;
                 }
             }
@@ -190,6 +207,9 @@ public class RemoteActivity extends AppCompatActivity {
             }
         });
         alertDialog = builder.create();
+        //绑定服务
+        Intent intent=new Intent(this, RemoterService.class);
+        bindService(intent,mConnection,Service.BIND_AUTO_CREATE);
 
     }
 
@@ -283,20 +303,20 @@ public class RemoteActivity extends AppCompatActivity {
         water_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pot_state==0){
-                    Toast.makeText(UIUtils.getContext(),"当前设备已离线",Toast.LENGTH_SHORT).show();
+                if (pot_state == 0) {
+                    Toast.makeText(UIUtils.getContext(), "当前设备已离线", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //等待10秒后，再次浇水
                 if (System.currentTimeMillis() > startTime_water) {
                     if (!isWater) {
-                        Const.REMOTE_STATE=Const.REMOTE_WATER_ADD;
+                        Const.REMOTE_STATE = Const.REMOTE_WATER_ADD;
                         isWater = true;
                         iv_water.startAnimation(animationSet);
                         //联网浇水
                         params.clear();
                         params.put(Const.USER_ID, UIUtils.getSpInt(Const.USER_ID) + "");//用户ID
-                        params.put("pot_id",PotID+"");//花盆ID
+                        params.put("pot_id", PotID + "");//花盆ID
                         HttpHelper.OkClient(Const.URL_ADDWATER, params);
 
                     }
@@ -339,14 +359,14 @@ public class RemoteActivity extends AppCompatActivity {
         bottle_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pot_state==0){
-                    Toast.makeText(UIUtils.getContext(),"当前设备已离线",Toast.LENGTH_SHORT).show();
+                if (pot_state == 0) {
+                    Toast.makeText(UIUtils.getContext(), "当前设备已离线", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //等待10秒后才可再次进行施肥操作
                 if (System.currentTimeMillis() > startTime_bottle) {
                     if (!isBottle) {
-                        Const.REMOTE_STATE=Const.REMOTE_BOTTLE_ADD;
+                        Const.REMOTE_STATE = Const.REMOTE_BOTTLE_ADD;
                         isBottle = true;
                         iv_bottle.startAnimation(animationSet);
 
@@ -391,25 +411,24 @@ public class RemoteActivity extends AppCompatActivity {
         iv_sun.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        downx=(int)event.getRawX();
-                        downy=(int)event.getRawY();
+                        downx = (int) event.getRawX();
+                        downy = (int) event.getRawY();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        movex= (int) event.getRawX();
-                        movey= (int) event.getRawY();
-                        currentx=movex-downx;
-                        currenty=movey-downy;
-                        int left=iv_sun.getLeft()+currentx;
-                        int right=iv_sun.getRight()+currentx;
-                        int top=iv_sun.getTop()+currenty;
-                        int bottom=iv_sun.getBottom()+currenty;
+                        movex = (int) event.getRawX();
+                        movey = (int) event.getRawY();
+                        currentx = movex - downx;
+                        currenty = movey - downy;
+                        int left = iv_sun.getLeft() + currentx;
+                        int right = iv_sun.getRight() + currentx;
+                        int top = iv_sun.getTop() + currenty;
+                        int bottom = iv_sun.getBottom() + currenty;
 
-                        iv_sun.layout(left,top,right,bottom);
-                        Log.e("ZDLW",iv_sun.getLeft()+" "+iv_sun.getTop()+" "+iv_sun.getRight()+" "+iv_sun.getBottom());
-                        downx= movex;
-                        downy= movey;
+                        iv_sun.layout(left, top, right, bottom);
+                        downx = movex;
+                        downy = movey;
                         break;
                     case MotionEvent.ACTION_UP:
                         break;
@@ -418,12 +437,27 @@ public class RemoteActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * 用后台服务执行心跳操作，每隔三秒访问网络获取数据。
+     */
+    private void starConnection(){
+        Message message=new Message();
+        message.what=Const.SERVICE_REMOTER;
+        message.arg1=PotID;
+        message.replyTo=ActivityMessenger;
+        try {
+            ServicerMessenger.send(message);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             int code=msg.what;
             String dataString= (String) msg.obj;
-            Log.e("ZDLW", dataString);
             switch (code){
                 //联网成功
                 case Const.REMOTE_CONNECTION_SUCCESS:
@@ -579,6 +613,9 @@ public class RemoteActivity extends AppCompatActivity {
         });
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(mConnection);
+    }
 }

@@ -167,4 +167,5 @@
     <color name="item_3">#8BC34A</color>
     <color name="item_4">#FFCB28</color>
     <color name="mengban">#aa000000</color>
+    <color name="hintcolor">#55FFFFFF</color>
 </resources>

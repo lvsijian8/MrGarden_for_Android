@@ -10,16 +10,19 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lvsijian8.flowerpot.global.GoglePlayApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
- * Created by Administrator on 2016/11/20.
+ * Created by lvsijian8 on 2016/11/20.
  */
 public class UIUtils {
     public static Context getContext(){
@@ -34,6 +37,18 @@ public class UIUtils {
     public static Typeface getTypeFace(){return GoglePlayApplication.getTypeface();}//获取字体文件
     public static Gson getGson(){return GoglePlayApplication.getGson();}//返回Gson
     ////////////////////////加载资源文件//////////////////////////////
+
+    /**
+     * 输出Toast信息
+     * @param msg
+     */
+    public static void makeText(Object msg){
+        Toast.makeText(getContext(),msg+"",Toast.LENGTH_SHORT).show();
+    }
+
+    public static void Log_e(Class clazz,String msg){
+        Log.e("ZDLW",clazz.getSimpleName()+"-->>"+msg);
+    }
 
     /**
      * 获取字符串
@@ -160,5 +175,18 @@ public class UIUtils {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
+
+    /**
+     * 判断手机号码的格式是否符合标准
+     * @param value
+     * @return
+     */
+    public static boolean checkCellphone(String value) {
+        String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+        Pattern p = Pattern.compile(regExp);
+        Matcher m = p.matcher(value);
+        return m.find();//boolean
+    }
+
 
 }

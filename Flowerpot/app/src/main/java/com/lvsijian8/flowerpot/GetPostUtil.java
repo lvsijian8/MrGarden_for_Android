@@ -1,6 +1,5 @@
 package com.lvsijian8.flowerpot;
 
-import android.os.Handler;
 import android.os.Message;
 
 import java.io.BufferedReader;

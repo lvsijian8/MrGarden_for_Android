@@ -30,7 +30,6 @@ public class HttpHelper {
 
     private static HttpHelper helper=null;
 
-
     private HttpHelper(){
         client=new OkHttpClient();
     }

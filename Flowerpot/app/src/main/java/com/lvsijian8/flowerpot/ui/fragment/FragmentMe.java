@@ -3,7 +3,6 @@ package com.lvsijian8.flowerpot.ui.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,15 +13,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lvsijian8.flowerpot.MainActivity;
 import com.lvsijian8.flowerpot.R;
-import com.lvsijian8.flowerpot.SignUpFirst;
 import com.lvsijian8.flowerpot.global.Const;
 import com.lvsijian8.flowerpot.ui.activity.AboutActivity;
 import com.lvsijian8.flowerpot.ui.activity.AlertActivity;
 import com.lvsijian8.flowerpot.ui.activity.FeedbackActivity;
 import com.lvsijian8.flowerpot.ui.activity.GuideActivity;
-import com.lvsijian8.flowerpot.ui.view.SettingItem;
+import com.lvsijian8.flowerpot.ui.activity.LoginActivity;
 import com.lvsijian8.flowerpot.utils.UIUtils;
 
 public class FragmentMe extends Fragment implements View.OnClickListener {
@@ -82,7 +79,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			case R.id.rlayout_me_help:
 				Intent intent = new Intent();
 				intent.setAction("android.intent.action.VIEW");
-				Uri content_url = Uri.parse("https://lvsijian.cn/MrFlower/");
+				Uri content_url = Uri.parse("https://lvsijian.cn/MrGarden/");
 				intent.setData(content_url);
 				startActivity(intent);
 				break;
@@ -106,7 +103,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 					public void onClick(DialogInterface dialog, int which) {
 						UIUtils.setSpNumInt(Const.USER_ID, -1);
 						UIUtils.setSpString(Const.USER_NAME, null);
-						getActivity().startActivity(new Intent(getContext(), MainActivity.class));
+						getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
 						getActivity().finish();
 					}
 				});
